@@ -1,0 +1,11 @@
+- name: Install microk8s
+  snap:
+    name:
+      - microk8s
+    classic: yes
+
+- name: Add vagrant user to the group microK8s
+  user:
+    name: vagrant
+    groups: microk8s
+    append: yes

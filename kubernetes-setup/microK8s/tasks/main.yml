@@ -1,0 +1,3 @@
+---
+# tasks file for microK8s
+- include: microK8s.yml

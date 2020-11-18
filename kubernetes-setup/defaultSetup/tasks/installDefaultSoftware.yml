@@ -8,3 +8,4 @@
     packages:
     - htop
     - mc
+    - net-tools

@@ -11,21 +11,6 @@ of the following software on the host:
 * Vagrant
 * Ansible
 
-## Installation
-
-
-### Documentation
-```bash
-# Install mkdocs
-sudo apt install mkdocs
-
-# Install pip
-sudo apt install python3-pip
-
-# Make sure latest version is used
-pip3 install --upgrade mkdocs
-```
-
 ## Commands
 
 * `mkdocs new [dir-name]` - Create a new project.

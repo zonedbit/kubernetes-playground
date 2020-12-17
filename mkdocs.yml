@@ -1,2 +1,8 @@
 site_name: Kubernetes-Playground
 theme: readthedocs
+
+nav:
+    - Home: index.md
+    - Installation: installation.md
+    - Vagrant: vagrant.md
+    - Kubectl: kubectl-config.md

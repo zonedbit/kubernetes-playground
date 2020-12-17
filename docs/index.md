@@ -1,10 +1,18 @@
-# Welcome to Kubernetes-Playground
+# Kubernetes-Playground Handbook
 
-This is my private MemoPad.
+The Kubernetes-Playground is a solution to setup a simple Kubernetes-Cluster
+with minimal effort, to learn and play with Kubernetes.
 
-For full documentation visit [mkdocs.org](https://mkdocs.org).
+# Prerequisites
+The usages of the Kubernetes-Playground requires the installation
+of the following software on the host:
+
+* Virtualbox
+* Vagrant
+* Ansible
 
 ## Installation
+
 
 ### Documentation
 ```bash

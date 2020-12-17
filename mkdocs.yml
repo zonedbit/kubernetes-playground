@@ -6,3 +6,4 @@ nav:
     - Installation: installation.md
     - Vagrant: vagrant.md
     - Kubectl: kubectl-config.md
+    - Mkdocs: mkdocs-guide.md

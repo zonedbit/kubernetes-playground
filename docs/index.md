@@ -3,7 +3,7 @@
 The Kubernetes-Playground is a solution to setup a simple Kubernetes-Cluster
 with minimal effort, to learn and play with Kubernetes.
 
-# Prerequisites
+## Prerequisites
 The usages of the Kubernetes-Playground requires the installation
 of the following software on the host:
 
@@ -11,12 +11,6 @@ of the following software on the host:
 * Vagrant
 * Ansible
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
 
 ## Project layout
 ```

@@ -13,9 +13,11 @@ of the following software on the host:
 
 
 ## Project layout
-```
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+``` bash
+.                       # Project root
+├── docs                # documentation
+├── kubernetes-setup    # Ansible scripts to provision the vagrant box
+├── mkdocs.yml          # configuration file for mkdocs
+├── README.md           # Readme file for github
+└── Vagrantfile         # Configuration of the vagrant box
 ```

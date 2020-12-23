@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Jenkins - Kubernetes-Playground</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Jenkins";
+    var mkdocs_page_input_path = "operators/jenkins.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Kubernetes-Playground</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../vagrant/">Vagrant</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../kubectl-config/">Kubectl</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../mkdocs-guide/">Mkdocs</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operators</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Jenkins</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#enable-dns">Enable DNS</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#install-operator">Install Operator</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#configure-custom-resource-definition">Configure Custom Resource Definition</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deploy-operator-using-yaml">Deploy Operator - using yaml</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-jenkins">Deploy Jenkins</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#credentials">Credentials</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#access-the-jenkins">Access the Jenkins</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#urls">URLs</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Kubernetes-Playground</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operators &raquo;</li>
+        
+      
+    
+    <li>Jenkins</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="jenkins-operator">Jenkins Operator</h1>
+<p>This section will guide you through the process of installing Jenkins in
+the Kubernetes cluster.</p>
+<h2 id="enable-dns">Enable DNS</h2>
+<p>During the installation Jenkins will fetch updates, therefore DNS is needed.</p>
+<pre><code class="language-bash"># Enable DNS
+vagrant ssh -c &quot;microk8s.enable dns&quot;
+</code></pre>
+<h2 id="install-operator">Install Operator</h2>
+<h3 id="configure-custom-resource-definition">Configure Custom Resource Definition</h3>
+<p>Create the custom resource definition for the jenkins operator</p>
+<pre><code class="language-bash"># Apply the custom resource definition
+kubectl apply -f https://raw.githubusercontent.com/jenkinsci/kubernetes-operator/master/deploy/crds/jenkins_v1alpha2_jenkins_crd.yaml
+
+# Get all custom resource definition - there should be two custom resource definition:
+#  - jenkins.jenkins.io
+#  - jenkinsimages.jenkins.io
+kubectl get customresourcedefinitions.apiextensions.k8s.io
+
+# Delete the custom resource definition
+kubectl delete customresourcedefinitions.apiextensions.k8s.io jenkins.jenkins.io
+kubectl delete customresourcedefinitions.apiextensions.k8s.io jenkinsimages.jenkins.io
+</code></pre>
+<h3 id="deploy-operator-using-yaml">Deploy Operator - using yaml</h3>
+<p>Create the Operator in the default namespace</p>
+<pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/jenkinsci/kubernetes-operator/master/deploy/all-in-one-v1alpha2.yaml
+</code></pre>
+<p>In the default namespace should be a pod running with the name <em>jenkins-operator-*</em>. This can be checked with:</p>
+<pre><code class="language-bash">kubectl get pods --all-namespaces
+</code></pre>
+<h2 id="deploy-jenkins">Deploy Jenkins</h2>
+<pre><code class="language-bash">kubectl apply -f operators/jenkins/jenkins_instance.yaml
+</code></pre>
+<p>After a while a jenkins pod should be running</p>
+<pre><code class="language-bash">watch kubectl get pods
+</code></pre>
+<p>In the case that the jenkins pod is in a restarting loop, check if DNS is enabled.</p>
+<pre><code class="language-bash"># Connect to the vagrant box
+vagrant ssh
+
+# Check the status - dns should be listed by the enabled addons
+microk8s.status
+
+# or as a one liner
+vagrant ssh -c &quot;microk8s.status&quot;
+</code></pre>
+<h3 id="credentials">Credentials</h3>
+<p>The postfix *-<em>my-jenkins</em>, must be same as in the <em>jenkins_instance.yaml</em> in the section <em>metadata.name</em></p>
+<pre><code class="language-bash"># The user Name of the Jenkins instance
+echo &quot;User:&quot;; kubectl get secret jenkins-operator-credentials-my-jenkins -o 'jsonpath={.data.user}' | base64 -d | xargs echo
+
+echo &quot;Password:&quot;; kubectl get secret jenkins-operator-credentials-my-jenkins -o 'jsonpath={.data.password}' | base64 -d | xargs echo
+</code></pre>
+<h3 id="access-the-jenkins">Access the Jenkins</h3>
+<p>By default Kubernetes is not routing traffic to any pods. It is possible to route your local traffic to Kubernetes
+by creating a <em>port-forward</em></p>
+<pre><code class="language-bash"># Create a port-forwarding from local host to the
+kubectl port-forward jenkins-my-jenkins 8080:8080
+</code></pre>
+<p>After executing this command, it is possible to open the URL <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a> and login to Jenkins.</p>
+<h2 id="urls">URLs</h2>
+<ul>
+<li><a href="https://jenkinsci.github.io/kubernetes-operator/docs/">https://jenkinsci.github.io/kubernetes-operator/docs/</a></li>
+<li><a href="https://github.com/jenkinsci/kubernetes-operator">https://github.com/jenkinsci/kubernetes-operator</a><ul>
+<li>The files (such as custom resource definition), are in the <em>deploy</em> folder</li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../../mkdocs-guide/" class="btn btn-neutral" title="Mkdocs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../mkdocs-guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

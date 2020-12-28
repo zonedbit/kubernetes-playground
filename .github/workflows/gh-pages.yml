@@ -8,12 +8,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      UML_FILES: "docs/diagrams/*.plantuml"
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+      # Prepare Environment
       - name: Setup Python
         uses: actions/setup-python@v1
         with:
@@ -25,9 +28,34 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install mkdocs
           python3 -m pip install mkdocs-material
-      - name: Build site
+      # End -  Prepare Environment
+
+      # Build pluntuml diagram
+      - name: Get Plantuml files
+        id: plantumlFile
+        run: |
+          echo "::set-output name=files::$(find ${{ env.UML_FILES }} | xargs)"
+
+      - name: UML files considered echo output
+        run: |
+          echo ${{ steps.plantumlFile.outputs.files }}
+
+      - name: Generate SVG Diagrams
+        uses: cloudbees/plantuml-github-action@master
+        with:
+            args: -v -tsvg ${{ steps.plantumlFile.outputs.files }}
+
+      - name: Generate PNG Diagrams
+        uses: cloudbees/plantuml-github-action@master
+        with:
+            args: -v -tpng ${{ steps.plantumlFile.outputs.files }}
+      # End - Build pluntuml diagram
+
+      # Build documentation
+      - name: Build mkdocs
         run: mkdocs build
 
+      # Deploy to GitHub Pages
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

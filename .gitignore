@@ -1,3 +1,7 @@
 .history/*
 .vagrant/*
 kubernetes-setup/tmp/*
+bin/*
+docs/diagrams/*.png
+docs/diagrams/*.svg
+site

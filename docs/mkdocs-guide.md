@@ -3,6 +3,10 @@
 Mkdocs is used to generate the Handbook for this project. It is helpful to [install](installation.md) `mkdocs`
 to generate a searchable html version of this handbook.
 
+## Plantuml
+![Plantuml example](/diagrams/documentation_plantuml_example.svg)
+
+
 ## Commands
 
 ``` bash

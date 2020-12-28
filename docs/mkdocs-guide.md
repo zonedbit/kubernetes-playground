@@ -4,7 +4,7 @@ Mkdocs is used to generate the Handbook for this project. It is helpful to [inst
 to generate a searchable html version of this handbook.
 
 ## Plantuml
-![Plantuml example](/diagrams/documentation_plantuml_example.svg)
+![Plantuml example](../diagrams/documentation_plantuml_example.svg)
 
 
 ## Commands

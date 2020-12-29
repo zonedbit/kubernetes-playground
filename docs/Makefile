@@ -5,7 +5,10 @@ DIAGRAMS_SRC := $(wildcard diagrams/*.plantuml)
 DIAGRAMS_PNG := $(addsuffix .png, $(basename $(DIAGRAMS_SRC)))
 DIAGRAMS_SVG := $(addsuffix .svg, $(basename $(DIAGRAMS_SRC)))
 
-# Default target first; build PNGs, probably what we want most of the time
+# Default target first; build png and svg
+all: png svg
+
+# build PNGs, probably what we want most of the time
 png: $(PLANTUML_EXEC) $(DIAGRAMS_PNG)
 
 # SVG are nice-to-have but don't need to build by default
@@ -28,4 +31,4 @@ diagrams/%.svg: diagrams/%.plantuml
 	java -jar $(PLANTUML_EXEC) -tsvg $^
 
 # Quirk of GNU Make: https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
-.PHONY: png svg clean
+.PHONY: all png svg clean

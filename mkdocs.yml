@@ -6,6 +6,6 @@ nav:
     - Installation: installation.md
     - Vagrant: vagrant.md
     - Kubectl: kubectl-config.md
-    - Mkdocs: mkdocs-guide.md
+    - Documentation: documentation-guide.md
     - Operators:
         - Jenkins: operators/jenkins.md

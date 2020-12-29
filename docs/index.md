@@ -15,6 +15,8 @@ of the following software on the host:
 ## Project layout
 ``` bash
 .                       # Project root
+├── .github             # the github workflow files
+├── bin                 # project specific binaries, like plantuml.jar; excluded from version control
 ├── docs                # documentation
 ├── kubernetes-setup    # Ansible scripts to provision the vagrant box
 ├── mkdocs.yml          # configuration file for mkdocs

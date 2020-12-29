@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Mkdocs - Kubernetes-Playground</title>
+  <title>Documentation - Kubernetes-Playground</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Mkdocs";
-    var mkdocs_page_input_path = "mkdocs-guide.md";
+    var mkdocs_page_name = "Documentation";
+    var mkdocs_page_input_path = "documentation-guide.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -64,11 +64,23 @@
                     </li>
                 </ul>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mkdocs</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Documentation</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#plantuml">Plantuml</a>
+    <li class="toctree-l2"><a class="reference internal" href="#mkdocs-commands">Mkdocs Commands</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
+    <li class="toctree-l2"><a class="reference internal" href="#plantuml">PlantUML</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-diagram">Example Diagram</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#makefile">Makefile</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#overview-targets">Overview Targets</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#urls">URLs</a>
     </li>
     </ul>
                     </li>
@@ -99,7 +111,7 @@
     
       
     
-    <li>Mkdocs</li>
+    <li>Documentation</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -110,12 +122,10 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="mkdocs-guide">Mkdocs Guide</h1>
-<p>Mkdocs is used to generate the Handbook for this project. It is helpful to <a href="../installation/">install</a> <code>mkdocs</code>
+                <h1 id="documentation-guide">Documentation Guide</h1>
+<p>Mkdocs and PlantUML is used to generate the Handbook of this project. It is helpful to <a href="../installation/">install</a> <code>mkdocs</code>
 to generate a searchable html version of this handbook.</p>
-<h2 id="plantuml">Plantuml</h2>
-<p><img alt="Plantuml example" src="../diagrams/documentation_plantuml_example.svg" /></p>
-<h2 id="commands">Commands</h2>
+<h2 id="mkdocs-commands">Mkdocs Commands</h2>
 <pre><code class="language-bash">#  Create a new project.
 mkdocs new [dir-name]
 
@@ -128,6 +138,60 @@ mkdocs build
 # Print this help message.
 mkdocs help
 </code></pre>
+<h2 id="plantuml">PlantUML</h2>
+<ul>
+<li>PlantUML is a tool to create diagrams from plain text</li>
+<li>files must be placed in the folder <em>docs/diagrams</em></li>
+<li>as a suffix for PlantUML files, <em>.plantuml</em> is used<ul>
+<li>this is required for the Makefile, to create image on the local machine</li>
+<li>and the GitHub Action to build and deploy the GitHub Page of this project</li>
+</ul>
+</li>
+<li>The <a href="https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml">Visual Studio Code</a> plugin,
+    provides code highlighting, code completion and a live preview, ...</li>
+</ul>
+<h3 id="example-diagram">Example Diagram</h3>
+<p><img alt="Plantuml example" src="../diagrams/documentation_plantuml_example.svg" /></p>
+<h3 id="makefile">Makefile</h3>
+<ul>
+<li>The Makefile to create <em>png</em> or <em>svg</em> images from plain text is in the <em>docs</em> folder<ul>
+<li>it is just needed for local development</li>
+</ul>
+</li>
+<li>In the case that plantuml is not in the <em>bin</em> folder of this project, it will be automatically downloaded</li>
+</ul>
+<h4 id="overview-targets">Overview Targets</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Target</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">all</td>
+<td align="left">Build png and svg images</td>
+</tr>
+<tr>
+<td align="left">png</td>
+<td align="left">Build png images</td>
+</tr>
+<tr>
+<td align="left">svg</td>
+<td align="left">Build svg images</td>
+</tr>
+<tr>
+<td align="left">clean</td>
+<td align="left">Delete all png and svg images</td>
+</tr>
+</tbody>
+</table>
+<h2 id="urls">URLs</h2>
+<ul>
+<li><a href="https://plantuml.com/">https://plantuml.com/</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml">https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml</a></li>
+</ul>
               
             </div>
           </div>

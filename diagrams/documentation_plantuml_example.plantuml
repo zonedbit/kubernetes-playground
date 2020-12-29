@@ -1,4 +1,8 @@
 @startuml
+skinparam handwritten true
+skinparam Monochrome true
+hide footbox
+
 Alice -> Bob: Authentication Request
 Bob --> Alice: Authentication Response
 

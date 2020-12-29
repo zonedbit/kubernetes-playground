@@ -70,7 +70,7 @@
                     </li>
                 </ul>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="mkdocs-guide/">Mkdocs</a>
+                    <li class="toctree-l1"><a class="reference internal" href="documentation-guide/">Documentation</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Operators</span></p>
@@ -123,6 +123,8 @@ of the following software on the host:</p>
 </ul>
 <h2 id="project-layout">Project layout</h2>
 <pre><code class="language-bash">.                       # Project root
+├── .github             # the github workflow files
+├── bin                 # project specific binaries, like plantuml.jar; excluded from version control
 ├── docs                # documentation
 ├── kubernetes-setup    # Ansible scripts to provision the vagrant box
 ├── mkdocs.yml          # configuration file for mkdocs
@@ -182,5 +184,5 @@ of the following software on the host:</p>
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2020-12-28 14:05:11.422257+00:00
+Build Date UTC : 2020-12-29 08:38:59.716378+00:00
 -->

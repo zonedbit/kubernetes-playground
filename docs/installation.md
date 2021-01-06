@@ -29,3 +29,12 @@ sudo apt install python3-pip
 # Make sure latest version is used
 pip3 install --upgrade mkdocs
 ```
+
+### Plantuml
+* By the first use of he makefile in the docs folder, plantuml is downloaded
+* For some diagrams plantuml depends on graphviz. Hence, it must be installed.
+
+```bash
+# Install graphviz
+sudo apt install graphviz
+```

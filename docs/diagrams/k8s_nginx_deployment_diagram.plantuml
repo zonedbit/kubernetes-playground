@@ -1,0 +1,26 @@
+@startuml
+skinparam handwritten true
+skinparam Monochrome true
+
+agent "nginx-ingress" <<Ingress>> as i1
+agent "nginx-service" <<Service>> as s1
+circle " " as c
+
+together  {
+    agent "nginx-1" <<Pod>> as p1
+    agent "nginx-2" <<Pod>> as p2
+    agent "nginx-3" <<Pod>> as p3
+}
+
+' Dependecies
+i1 -> s1
+s1 -> c
+
+c -> p1
+c -> p2
+c -> p3
+
+' Layout stuff
+p1 -[hidden]- p2
+p2 -[hidden]- p3
+@enduml

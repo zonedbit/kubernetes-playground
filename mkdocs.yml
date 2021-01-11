@@ -7,7 +7,6 @@ nav:
     - Vagrant: vagrant.md
     - Kubectl: kubectl-config.md
     - Documentation: documentation-guide.md
-    - Operators:
-        - Jenkins: operators/jenkins.md
     - k8s-apps:
         - Nginx: k8s-apps/nginx.md
+        - Jenkins: k8s-apps/jenkins.md

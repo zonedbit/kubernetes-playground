@@ -39,7 +39,7 @@ kubectl get pods --all-namespaces
 ## Deploy Jenkins
 
 ```bash
-kubectl apply -f operators/jenkins/jenkins_instance.yaml
+kubectl apply -f k8s-apps/jenkins/jenkins_instance.yaml
 ```
 
 After a while a jenkins pod should be running

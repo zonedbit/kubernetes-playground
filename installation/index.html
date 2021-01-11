@@ -57,6 +57,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#required">Required</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#optional-documentation">Optional - Documentation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#plantuml">Plantuml</a>
+    </li>
+        </ul>
     </li>
     </ul>
                     </li>
@@ -76,6 +80,11 @@
                 <p class="caption"><span class="caption-text">Operators</span></p>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../operators/jenkins/">Jenkins</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">k8s-apps</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../k8s-apps/nginx/">Nginx</a>
                     </li>
                 </ul>
       </div>
@@ -135,6 +144,14 @@ sudo apt install python3-pip
 
 # Make sure latest version is used
 pip3 install --upgrade mkdocs
+</code></pre>
+<h3 id="plantuml">Plantuml</h3>
+<ul>
+<li>By the first use of he makefile in the docs folder, plantuml is downloaded</li>
+<li>For some diagrams plantuml depends on graphviz. Hence, it must be installed.</li>
+</ul>
+<pre><code class="language-bash"># Install graphviz
+sudo apt install graphviz
 </code></pre>
               
             </div>

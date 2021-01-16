@@ -74,6 +74,22 @@
     <li class="toctree-l2"><a class="reference internal" href="#deployment-diagram">Deployment Diagram</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-ngnix">Deploy Ngnix</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#deployment">Deployment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#service">Service</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#testing-the-service">Testing the Service</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ingress">Ingress</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-related-resources-are-tied">How related resources are tied</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#routing-network-traffic">Routing Network traffic</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#urls">URLs</a>
     </li>
@@ -122,23 +138,59 @@
 <h2 id="deployment-diagram">Deployment Diagram</h2>
 <p><img alt="Nginx Deployment Diagram" src="../../diagrams/k8s_nginx_deployment_diagram.svg" /></p>
 <h2 id="deploy-ngnix">Deploy Ngnix</h2>
+<h3 id="deployment">Deployment</h3>
+<p>In the first step three <em>Nginx</em> instances are deployed to the <em>Kubernetes Cluster</em>. All three instances providing the
+same content, a simple <em>"Hello World"</em></p>
 <pre><code class="language-bash"># Creates the deployment and rollout three nginx instances
 kubectl apply -f k8s-apps/nginx/nginx-deployment.yaml
 </code></pre>
+<p>Next the <em>nginx-service</em> is deployed, this is a <em>kubernetes</em> resource to expose the
+pods to the internal network of the <em>cluster</em>.</p>
+<h3 id="service">Service</h3>
 <pre><code class="language-bash"># Create a service which will route the traffic to one of the three nginx pods
 kubectl apply -f k8s-apps/nginx/nginx-service.yaml
 </code></pre>
+<p>The pods are dynamically deployments, which means that pods can be created and destroyed at anytime.
+Consequently, the network configuration such as IP Addresses will change. Besides, all three pods are serving the same content
+and it is just relevant which pod will handle the request.</p>
+<p>A <em>Kubernetes Service</em> solve this by giving as a stable <em>DNS</em> name and ensuring that the request it routed to one of the three pods.</p>
+<h4 id="testing-the-service">Testing the Service</h4>
+<p>Services are just accessible within the <em>Cluster</em>, thus to test the configuration it is needed to create a <em>Port-Forward</em> from
+the client to the <em>Kubernetes Cluster</em>.</p>
 <pre><code class="language-bash"># Create a port-forwarding from local host to the service
 kubectl port-forward service/my-ngnix-service 8080:8080
 </code></pre>
+<p>Opening <a href="http://192.168.60.10:8080">http://192.168.60.10:8080</a> in a browser should show us the default Nginx start page.</p>
+<h3 id="ingress">Ingress</h3>
+<p>The goal of the last step is to expose the <em>Nginx</em> to the outside. Network traffic which is entering a network is called
+<em>ingress</em>, traffic leaving a network is called <em>egress</em>.</p>
+<p>A <em>Kubernetes Ingress</em> consists of an <em>Ingress Controller</em> and an <em>Ingress Resources</em>. The controller is in a nutshell
+a http proxy, which will forward the traffic to the service/pod. In contrast is the <em>resource</em> the configuration of the
+controller behavior.</p>
+<p>It is possible to use the same controller for several resources.</p>
 <pre><code class="language-bash"># Enable a Ingress controller
 vagrant ssh -c &quot;microk8s.enable ingress&quot;
-</code></pre>
-<pre><code class="language-bash"># Create a ingress
+
+# Create a ingress
 kubectl apply -f k8s-apps/nginx/nginx-ingress.yaml
 </code></pre>
 <p>The nginx is now reachable from outside the cluster, to test it open <a href="http://192.168.60.10/path-of-my-ingress">http://192.168.60.10/path-of-my-ingress</a> in
 a Browser.</p>
+<h2 id="how-related-resources-are-tied">How related resources are tied</h2>
+<ul>
+<li>The pod deployment resource file <em>nginx-deployment.yaml</em>, specifics labels. These labels are useful
+    to select a set of pods, e.g. for searching pods or linking resources together.</li>
+<li>In the service resource file <em>nginx-service.yaml</em> the selector directive is used to select all pods with a specific set of labels.
+    In this example the label <em>app: nginx</em> is used.</li>
+<li>The <em>name</em> directive is used in the ingress resource <em>nginx-service.yaml</em>, to connect the ingress with the service.</li>
+</ul>
+<h2 id="routing-network-traffic">Routing Network traffic</h2>
+<p><img alt="Nginx Network traffic" src="../diagrams/k8s_nginx_network_traffic.svg" /></p>
+<ul>
+<li>The <em>nginx-ingress</em> accept http request on port 80 from the client.</li>
+<li>All traffic on port 80 is forwarded from the <em>nginx-ingress</em> to the <em>nginx-service</em> on Port 8080</li>
+<li>The request which the <em>nginx-service</em> received on port 8080 is forwarded to exactly one <em>nginx-pod</em> on port 80</li>
+</ul>
 <h2 id="urls">URLs</h2>
 <ul>
 <li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a></li>

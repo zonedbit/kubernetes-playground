@@ -1,0 +1,22 @@
+@startuml
+skinparam handwritten true
+skinparam Monochrome true
+hide footbox
+
+participant client
+
+box "Kubernetes Cluster"
+participant "nginx-ingress" as ingress
+participant "nginx-service" as service
+participant "nginx-pod"     as pod
+end box
+
+client        -> ingress  : HTTP Request Port 80
+ingress -> service  : Forward to Port 8080
+service -> pod      : Forward to Port 80
+
+service <-- pod     : Response
+ingress <-- service : Response
+client <-- ingress : Response
+
+@enduml

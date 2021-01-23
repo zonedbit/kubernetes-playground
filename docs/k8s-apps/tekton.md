@@ -48,6 +48,27 @@ access the Dashboard in your Browser with the URL <http://127.0.0.1:9097>
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
 
+### Ingress
+
+The goal of the last step is to expose the *Tekton Dashboard* to the outside.
+
+A *Kubernetes Ingress* consists of an *Ingress Controller* and an *Ingress Resources*. The controller is in a nutshell
+a http proxy, which will forward the traffic to the service/pod. In contrast is the *resource* the configuration of the
+controller behavior.
+
+It is possible to use the same controller for several resources.
+
+```bash
+# Enable a Ingress controller
+vagrant ssh -c "microk8s.enable ingress"
+
+# Create a ingress
+kubectl apply -f k8s-apps/tekton/tekton-dashboard-ingress.yaml
+```
+
+The nginx is now reachable from outside the cluster, to test it open <http://tekton.k8s.home> in
+a Browser.
+
 ## Hello Tekton Task
 
 In the next steps a simple *hello world* task is created, executed and the

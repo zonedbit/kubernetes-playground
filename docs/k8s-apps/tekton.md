@@ -50,7 +50,7 @@ kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 
 ### Ingress
 
-The goal of the last step is to expose the *Tekton Dashboard* to the outside.
+Next the *Tekton Dashboard* is exposed to the outside.
 
 A *Kubernetes Ingress* consists of an *Ingress Controller* and an *Ingress Resources*. The controller is in a nutshell
 a http proxy, which will forward the traffic to the service/pod. In contrast is the *resource* the configuration of the

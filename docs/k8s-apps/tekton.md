@@ -1,5 +1,8 @@
 # Tekton
 
+Tekton an cloud native open-source framework for creating CI/CD systems. The next steps
+are describing the installation process on the Kubernetes-playground.
+
 ## Install Pipelines
 
 Install the core component *Tekton Pipelines*
@@ -11,7 +14,11 @@ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline
 After a moment *Tekton Pipline* should run in his own namespace.
 
 ``` bash
+# Check the status of the tekton pods
 kubectl get pods --namespace tekton-pipelines
+
+# or use watch for auto refresh
+watch kubectl get pods --namespace tekton-pipelines
 ```
 
 ## Tekton CLI
@@ -32,7 +39,7 @@ sudo apt update && sudo apt install -y tektoncd-cli
 kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
 ```
 
-### Test via port-forward
+### Access via port-forward
 
 After a setup of a *port-forward* to the *tekton-dashboard* service, it is possible to
 access the Dashboard in your Browser with the URL <http://127.0.0.1:9097>
@@ -40,19 +47,6 @@ access the Dashboard in your Browser with the URL <http://127.0.0.1:9097>
 ``` bash
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
-
-### Ingress
-
-```bash
-# Enable a Ingress controller
-vagrant ssh -c "microk8s.enable ingress"
-
-# Create a ingress
-kubectl apply -f k8s-apps/tekton/tekton-ingress.yaml
-```
-
-The *tekton-dashboard* is now reachable from outside the cluster, to test it open <http://192.168.60.10/tekton> in
-a Browser.
 
 ## Hello Tekton Task
 

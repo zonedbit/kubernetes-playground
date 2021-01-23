@@ -41,12 +41,32 @@ kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/d
 
 ### Access via port-forward
 
-After a setup of a *port-forward* to the *tekton-dashboard* service, it is possible to
+After the setup of a *port-forward* to the *tekton-dashboard* service, it is possible to
 access the Dashboard in your Browser with the URL <http://127.0.0.1:9097>
 
 ``` bash
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
+
+### Ingress
+
+Next the *Tekton Dashboard* is exposed to the outside. Therefore, a *ingress configuration* is created.
+The concept of ingress controllers are explained in the [Nginx](nginx.md) chapter.
+
+```bash
+# Enable a Ingress controller
+vagrant ssh -c "microk8s.enable ingress"
+
+# Create a ingress
+kubectl apply -f k8s-apps/tekton/tekton-dashboard-ingress.yaml
+```
+
+The *tekton-dashboard* is now reachable from outside of the cluster, via the URL <http://tekton.k8s.home>.
+
+Instead of the external cluster IP Address, a sub-domain is used to access the *tekton-dashboard*. This makes
+the ingress configuration easier, when a web-application loads resources by their absolute URL; otherwise the
+URL rewriting in the ingress configuration gets challenging.
+For details, see the [network configuration](../network-configuration.md) chapter.
 
 ## Hello Tekton Task
 

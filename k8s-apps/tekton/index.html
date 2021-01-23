@@ -83,6 +83,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#access-via-port-forward">Access via port-forward</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ingress">Ingress</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#hello-tekton-task">Hello Tekton Task</a>
@@ -154,10 +156,24 @@ sudo apt update &amp;&amp; sudo apt install -y tektoncd-cli
 <pre><code class="language-bash">kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
 </code></pre>
 <h3 id="access-via-port-forward">Access via port-forward</h3>
-<p>After a setup of a <em>port-forward</em> to the <em>tekton-dashboard</em> service, it is possible to
+<p>After the setup of a <em>port-forward</em> to the <em>tekton-dashboard</em> service, it is possible to
 access the Dashboard in your Browser with the URL <a href="http://127.0.0.1:9097">http://127.0.0.1:9097</a></p>
 <pre><code class="language-bash">kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 </code></pre>
+<h3 id="ingress">Ingress</h3>
+<p>Next the <em>Tekton Dashboard</em> is exposed to the outside. Therefore, a <em>ingress configuration</em> is created.
+The concept of ingress controllers are explained in the <a href="../nginx/">Nginx</a> chapter.</p>
+<pre><code class="language-bash"># Enable a Ingress controller
+vagrant ssh -c &quot;microk8s.enable ingress&quot;
+
+# Create a ingress
+kubectl apply -f k8s-apps/tekton/tekton-dashboard-ingress.yaml
+</code></pre>
+<p>The <em>tekton-dashboard</em> is now reachable from outside of the cluster, via the URL <a href="http://tekton.k8s.home">http://tekton.k8s.home</a>.</p>
+<p>Instead of the external cluster IP Address, a sub-domain is used to access the <em>tekton-dashboard</em>. This makes
+the ingress configuration easier, when a web-application loads resources by their absolute URL; otherwise the
+URL rewriting in the ingress configuration gets challenging.
+For details, see the <a href="../../network-configuration/">network configuration</a> chapter.</p>
 <h2 id="hello-tekton-task">Hello Tekton Task</h2>
 <p>In the next steps a simple <em>hello world</em> task is created, executed and the
 result is checked. The taskrun is visible on the shell and the dashboard.</p>

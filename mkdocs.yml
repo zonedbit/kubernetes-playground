@@ -10,3 +10,4 @@ nav:
     - k8s-apps:
         - Nginx: k8s-apps/nginx.md
         - Jenkins: k8s-apps/jenkins.md
+        - Tekton: k8s-apps/tekton.md

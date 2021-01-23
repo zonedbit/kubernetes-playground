@@ -9,3 +9,13 @@
     name: vagrant
     groups: microk8s
     append: yes
+
+- name: Creates config for Authentication and authorization
+  template:
+    src: "{{ item }}.j2"
+    dest: "/var/snap/microk8s/current/certs/{{ item }}"
+    owner: root
+    group: microk8s
+    mode: 0660
+  with_items:
+    - csr.conf.template

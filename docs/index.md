@@ -1,9 +1,10 @@
 # Kubernetes-Playground Handbook
 
 The Kubernetes-Playground is a solution to setup a simple Kubernetes-Cluster
-with minimal effort, to learn and play with Kubernetes.
+with minimal effort, to learn and play with Kubernetes, see [GitHub](https://github.com/zonedbit/kubernetes-playground)
 
 ## Prerequisites
+
 The usages of the Kubernetes-Playground requires the installation
 of the following software on the host:
 
@@ -11,8 +12,8 @@ of the following software on the host:
 * Vagrant
 * Ansible
 
-
 ## Project layout
+
 ``` bash
 .                       # Project root
 ├── .github             # the github workflow files

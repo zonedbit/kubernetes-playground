@@ -19,7 +19,7 @@ mkdir .kube
 # if the config file already exist, it is needed to merge them
 vagrant ssh -c microk8s.config >> ~/.kube/config
 
-# change the server ip to the external ip of the vagrant box
+# change the server ip to the external ip of the vagrant box or k8s.home
 vi ~/.kube/config
 ```
 

@@ -117,7 +117,7 @@
             <div class="section">
               
                 <h1 id="configuration-of-kubectl">Configuration of kubectl</h1>
-<p>The next bash snippets outlines, the installation and configuration to use kubectl to access microk8s in a vagrant box.  </p>
+<p>The next bash snippets outlines, the installation and configuration to use kubectl to access microk8s in a vagrant box.</p>
 <h2 id="install-kubectl">Install kubectl</h2>
 <pre><code class="language-bash"># Install kubectl via snap
 sudo snap install kubectl --classic
@@ -127,12 +127,15 @@ sudo snap install kubectl --classic
 mkdir .kube
 
 # get the configuration from the vagrant box
-# if the config file already exist, it is needed to merege them
+# if the config file already exist, it is needed to merge them
 vagrant ssh -c microk8s.config &gt;&gt; ~/.kube/config
 
-# change the server ip to the external ip of the vagrant box
+# change the server ip to the external ip of the vagrant box or k8s.home
 vi ~/.kube/config
 </code></pre>
+<p>Instead of the external IP Address of the vagrant box it is also possible to use the domain <em>k8s.home</em>.
+Hence, the local DNS must resolve the domain to the IP of the vagrant box. This can be done by modifying the
+<em>/etc/hosts</em> file or the configuration of the local DNS resolver like Unbound.</p>
 <h2 id="bash-bash-completion">bash bash-completion</h2>
 <pre><code class="language-bash">sudo kubectl completion bash &gt;/etc/bash_completion.d/kubectl
 </code></pre>

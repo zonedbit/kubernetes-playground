@@ -1,4 +1,4 @@
-# Tekton
+# Tekton Installation
 
 Tekton an cloud native open-source framework for creating CI/CD systems. The next steps
 are describing the installation process on the Kubernetes-playground.

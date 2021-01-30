@@ -1,6 +1,5 @@
 # Tekton Pipeline
 
-
 ## Prepare the cluster
 
 ```bash

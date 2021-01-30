@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
   name: maven-build
+  namespace: tekton-pipelines
 spec:
   workspaces:
   - name: local-maven-repo
@@ -33,20 +34,6 @@ spec:
     params:
     - name: GOALS
       value: ["verify"]
-    workspaces:
-    - name: maven-repo
-      workspace: local-maven-repo
-  - name: gen-report
-    taskRef:
-      name: mvn
-    runAfter: ["build"]
-    resources:
-      inputs:
-      - name: source
-        resource: app-git
-    params:
-    - name: GOALS
-      value: ["site"]
     workspaces:
     - name: maven-repo
       workspace: local-maven-repo

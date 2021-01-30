@@ -1,7 +1,8 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  generateName: petclinic-run-
+  generateName: spring-petclinic-
+  namespace: tekton-pipelines
 spec:
   pipelineRef:
     name: maven-build
@@ -11,7 +12,7 @@ spec:
       type: git
       params:
         - name: url
-          value: https://github.com/spring-projects/spring-petclinic
+          value: https://github.com/spring-projects/spring-petclinic.git
   workspaces:
   - name: local-maven-repo
     persistentVolumeClaim:

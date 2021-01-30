@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: mvn
+  namespace: tekton-pipelines
 spec:
   workspaces:
   - name: maven-repo
@@ -21,4 +22,5 @@ spec:
       command: ["/usr/bin/mvn"]
       args:
         - -Dmaven.repo.local=$(workspaces.maven-repo.path)
+        - -Dmaven.test.skip=true
         - "$(inputs.params.GOALS)"

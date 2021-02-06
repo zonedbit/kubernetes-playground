@@ -16,9 +16,7 @@ vagrant ssh -c "microk8s.enable storage"
 vagrant ssh -c "microk8s.enable dns"
 ```
 
-## Setup the pipeline
-
-### Create a PersistentVolumeClaim
+## Create a PersistentVolumeClaim
 
 First, the persistence volume claim is created, to cache the maven
 dependencies. From the second build, a download of the dependencies can avoid
@@ -28,7 +26,7 @@ and the build will gain speed, as .
 kubectl apply -f k8s-apps/tekton/pipeline/maven-repo-pvc.yaml
 ```
 
-### Create a Task
+## Create a Task
 
 A *task* is a series of *steps*, which are executed in the same kubernetes pod.
 Each *step* runs in separate container in the same pod.
@@ -41,7 +39,13 @@ kubectl apply -f k8s-apps/tekton/pipeline/maven-task.yaml
 
 ```
 
-### Create a Pipeline
+## Create a Pipeline
+
+Pipelines are a group of multiple tasks, with the key characteristic:
+
+* Each pipeline is executed is a separate pod
+* Multiple pipelines are connected by a directed acyclic graph (DAG)
+* Pipelines are executed in the graph order
 
 ```bash
 kubectl apply -f k8s-apps/tekton/pipeline/maven-build-pipeline.yaml
@@ -49,12 +53,15 @@ kubectl apply -f k8s-apps/tekton/pipeline/maven-build-pipeline.yaml
 
 ## Start a pipeline run
 
+The *Pipeline* is like a class in object oriented programming and abstract description, without specific values.
+A *PipelineRun* is the instantiation and execution of a *Pipeline* with specific values.
+
 ```bash
 kubectl create -f k8s-apps/tekton/pipeline/run/spring-petclinic-pipeline-run.yaml
 ```
 
 ## URLs
 
-- <https://tekton.dev/docs/concepts/>
-- <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>
-- <https://developers.redhat.com/blog/2020/02/26/speed-up-maven-builds-in-tekton-pipelines/>
+* <https://tekton.dev/docs/concepts/>
+* <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>
+* <https://developers.redhat.com/blog/2020/02/26/speed-up-maven-builds-in-tekton-pipelines/>

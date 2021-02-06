@@ -1,5 +1,6 @@
 .history/*
 .vagrant/*
+.kubeconf/*
 kubernetes-setup/tmp/*
 bin/*
 docs/diagrams/*.png

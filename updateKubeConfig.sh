@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KUBE_CONF_DIR="./.kubeconf"
+KUBE_CONF_DIR="$PWD/.kubeconf"
 KUBE_CONF_FILE="config"
 KUBE_CONFIGURATION="$KUBE_CONF_DIR/$KUBE_CONF_FILE"
 
@@ -18,3 +18,4 @@ vagrant ssh -c microk8s.config > "$KUBE_CONFIGURATION"
 sed -i -r 's/([0-9]{1,3}\.){3}[0-9]{1,3}/k8s\.home/g' "$KUBE_CONFIGURATION"
 
 # Add the configuration to the path
+export KUBECONFIG="$KUBE_CONFIGURATION"

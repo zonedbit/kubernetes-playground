@@ -10,4 +10,6 @@ nav:
     - k8s-apps:
         - Nginx: k8s-apps/nginx.md
         - Jenkins: k8s-apps/jenkins.md
-        - Tekton: k8s-apps/tekton.md
+        - Tekton:
+            - Installation:  k8s-apps/tekton/tekton-installation.md
+            - Pipeline: k8s-apps/tekton/tekton-pipeline.md

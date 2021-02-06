@@ -3,13 +3,14 @@ theme: readthedocs
 
 nav:
     - Home: index.md
-    - Installation: installation.md
-    - Vagrant: vagrant.md
-    - Kubectl: kubectl-config.md
-    - Documentation: documentation-guide.md
+    - Prepare Host System:
+          - Installation: installation.md
+          - Vagrant: vagrant.md
+          - Kubectl: kubectl-config.md
+          - Documentation: documentation-guide.md
     - k8s-apps:
-        - Nginx: k8s-apps/nginx.md
-        - Jenkins: k8s-apps/jenkins.md
-        - Tekton:
-            - Installation:  k8s-apps/tekton/tekton-installation.md
-            - Pipeline: k8s-apps/tekton/tekton-pipeline.md
+          - Nginx: k8s-apps/nginx.md
+          - Jenkins: k8s-apps/jenkins.md
+          - Tekton:
+                - Installation: k8s-apps/tekton/tekton-installation.md
+                - Pipeline: k8s-apps/tekton/tekton-pipeline.md

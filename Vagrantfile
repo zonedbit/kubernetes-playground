@@ -1,4 +1,4 @@
-IMAGE_NAME = "bento/ubuntu-20.04"
+IMAGE_NAME = "ubuntu/groovy64"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -12,11 +12,16 @@ Vagrant.configure("2") do |config|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "192.168.60.10"
         master.vm.hostname = "k8s-master"
-        master.vm.provision "ansible" do |ansible|
+
+        # Install ansible; as with vagrant it does not work
+        master.vm.provision "shell",
+            inline: "apt-get update -y -qq && apt-get upgrade -y -qq && apt-get install ansible -y -qq"
+
+        # Provsion the box with ansible on the guest system
+        master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "kubernetes-setup/master-playbook.yml"
-            ansible.extra_vars = {
-                node_ip: "192.168.60.10",
-            }
+            ansible.install  = false
+            ansible.become   = true
         end
     end
 end

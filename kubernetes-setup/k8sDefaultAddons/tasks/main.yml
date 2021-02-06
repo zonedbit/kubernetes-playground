@@ -1,0 +1,3 @@
+---
+# tasks file for k8sDefaultAddons
+- include: enableK8sDefaultAddons.yml

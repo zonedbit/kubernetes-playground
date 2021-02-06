@@ -62,6 +62,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#install-kubectl">Install kubectl</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#kubectl-configuration">kubectl configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-via-update-script">Configuration via update script</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#bash-bash-completion">bash bash-completion</a>
     </li>
@@ -141,6 +145,18 @@ vi ~/.kube/config
 <p>Instead of the external IP Address of the vagrant box it is also possible to use the domain <em>k8s.home</em>.
 Hence, the local DNS must resolve the domain to the IP of the vagrant box. This can be done by modifying the
 <em>/etc/hosts</em> file or the configuration of the local DNS resolver like Unbound.</p>
+<h3 id="configuration-via-update-script">Configuration via update script</h3>
+<p>The <code>updateKubeConfig.sh</code> provides the following functionality</p>
+<ul>
+<li>Copy the configuration from the vagrant box, to the current directory</li>
+<li>Replace the IP with the domain <em>k8s.home</em></li>
+<li>set the environment variable KUBECONFIG to the file from the first step</li>
+<li>the first dot is important; otherwise the environment variable is not set</li>
+<li>from the current shell, only this configuration file is usable</li>
+<li>the configuration applies only temporarily to the open shell session</li>
+</ul>
+<pre><code class="language-bash">. ./updateKubeConfig.sh
+</code></pre>
 <h2 id="bash-bash-completion">bash bash-completion</h2>
 <pre><code class="language-bash">sudo kubectl completion bash &gt;/etc/bash_completion.d/kubectl
 </code></pre>

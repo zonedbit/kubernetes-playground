@@ -66,7 +66,7 @@ The *tekton-dashboard* is now reachable from outside of the cluster, via the URL
 Instead of the external cluster IP Address, a sub-domain is used to access the *tekton-dashboard*. This makes
 the ingress configuration easier, when a web-application loads resources by their absolute URL; otherwise the
 URL rewriting in the ingress configuration gets challenging.
-For details, see the [network configuration](../network-configuration.md) chapter.
+For details, see the [network configuration](../../network-configuration.md) chapter.
 
 ## Hello Tekton Task
 

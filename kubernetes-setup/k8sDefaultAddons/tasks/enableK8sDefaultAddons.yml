@@ -1,0 +1,8 @@
+- name: Enable K8s default addons
+  shell: "microk8s.enable {{item}} > /dev/null"
+  args:
+    executable: /bin/bash
+  loop:
+    - dns
+    - ingress
+    - storage

@@ -6,3 +6,4 @@
   roles:
     - defaultSetup
     - microK8s
+    - k8sDefaultAddons

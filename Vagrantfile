@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
             ansible.playbook = "kubernetes-setup/master-playbook.yml"
             ansible.install  = false
             ansible.become   = true
+            ansible.compatibility_mode = "2.0"
         end
     end
 end

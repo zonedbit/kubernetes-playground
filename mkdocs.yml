@@ -14,3 +14,4 @@ nav:
               - Tekton:
                       - Installation: k8s-apps/tekton/tekton-installation.md
                       - Pipeline: k8s-apps/tekton/tekton-pipeline.md
+      - Analysis: run-container-for-analysis.md

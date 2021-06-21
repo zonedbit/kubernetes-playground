@@ -34,9 +34,9 @@ The `updateKubeConfig.sh` provides the following functionality
 * Copy the configuration from the vagrant box, to the current directory
 * Replace the IP with the domain *k8s.home*
 * set the environment variable KUBECONFIG to the file from the first step
-  * the first dot is important; otherwise the environment variable is not set
-  * from the current shell, only this configuration file is usable
-  * the configuration applies only temporarily to the open shell session
+    * the first dot is important; otherwise the environment variable is not set
+    * from the current shell, only this configuration file is usable
+    * the configuration applies only temporarily to the open shell session
 
 ```bash
 . ./updateKubeConfig.sh

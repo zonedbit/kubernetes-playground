@@ -20,6 +20,7 @@ mkdocs help
 ```
 
 ## PlantUML
+
 - PlantUML is a tool to create diagrams from plain text
 - files must be placed in the folder *docs/diagrams*
 - as a suffix for PlantUML files, *.plantuml* is used
@@ -29,14 +30,17 @@ mkdocs help
     provides code highlighting, code completion and a live preview, ...
 
 ### Example Diagram
+
 ![Plantuml example](../diagrams/documentation_plantuml_example.svg)
 
 ### Makefile
+
 - The Makefile to create *png* or *svg* images from plain text is in the *docs* folder
     - it is just needed for local development
 - In the case that plantuml is not in the *bin* folder of this project, it will be automatically downloaded
 
 #### Overview Targets
+
 | Target            |  Description                  |
 | :-------------    | :----------                   |
 |  all              | Build png and svg images      |
@@ -44,7 +48,7 @@ mkdocs help
 |  svg              | Build svg images              |
 |  clean            | Delete all png and svg images |
 
-
 ## URLs
+
 - <https://plantuml.com/>
 - <https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml>

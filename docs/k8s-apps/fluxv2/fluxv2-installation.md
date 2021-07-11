@@ -21,7 +21,7 @@ vi ~/.bashrc
 vi ~/.zshrc
 
 # Add this line
-. <(flux completion zsh) && compdef _flux flux
+source <(flux completion zsh) && compdef _flux flux
 ```
 
 ## Verify the cluster
@@ -35,16 +35,17 @@ flux check --pre
 
 * Creating a git repository is a prerequisite to install FluxV2. This repository is
   used by FluxV2 to manage is own configuration.
-* For testing purpose, the easy way is to create a private Github repository
+* For testing purpose, the easy way is to create a private GitHub repository
 * After the repository exists, the next command can be modified and executed
-    * By the provided URL from Github to clone the repository
+    * By the provided URL from GitHub to clone the repository
       is after the top-level domain com a : which must be replaced against a  /
 * During the installation FluxV2 will generate a pair of private and public ssh keys
     * The public key is printed to the terminal and before continuing the installation
-      the key must be added to the Github repo
+      the key must be added to the GitHub repo
 * TODO location
 
 ``` sh
+# Replace the URL with the your configuration repository
 flux bootstrap git \
   --url=ssh://git@github.com/zonedbit/flux-conf-playground.git \
   --branch=flux-conf \

@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>CLI - Kubernetes-Playground</title>
+  <title>Deploy App - Kubernetes-Playground</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "CLI";
-    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-cli.md";
+    var mkdocs_page_name = "Deploy App";
+    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-deploy-podinfo.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -77,21 +77,21 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="#">Flux</a>
     <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" href="fluxv2-cli.html">CLI</a>
-    <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#install-the-flux-cli">Install the flux cli</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#enable-autocompletion-bash">Enable Autocompletion - Bash</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#enable-autocompletion-zsh">Enable Autocompletion - Zsh</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
+                <li class="toctree-l2"><a class="reference internal" href="fluxv2-cli.html">CLI</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="fluxv2-installation.html">Installation</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="fluxv2-deploy-podinfo.html">Deploy App</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="fluxv2-deploy-podinfo.html">Deploy App</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#adding-git-repository-as-flux-source">Adding Git repository as flux source</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deploy-podinfo-via-kustomization">Deploy Podinfo via kustomization</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                     </li>
@@ -129,7 +129,7 @@
         
       
     
-    <li>CLI</li>
+    <li>Deploy App</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -141,22 +141,68 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="fluxv2-cli">FluxV2 CLI</h1>
-<h2 id="install-the-flux-cli">Install the flux cli</h2>
-<pre><code class="language-sh">curl -s https://fluxcd.io/install.sh | sudo bash
-</code></pre>
-<h3 id="enable-autocompletion-bash">Enable Autocompletion - Bash</h3>
-<pre><code class="language-sh">vi ~/.bashrc
+                <h1 id="deploy-podinfo">Deploy Podinfo</h1>
+<p><em>Podinfo</em> is a microservice to demonstrate best practices of
+running a microservice in a Kubernetes cluster. In this chapter
+<em>Podinfo</em> is used a deployment unit and deployed with FluxV2
+kustomization controller.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>FluxV2 installed in a Kubernetes cluster</li>
+<li>A septate configuration git repository,
+  the repository from the installation section is sufficient</li>
+</ul>
+<h2 id="adding-git-repository-as-flux-source">Adding Git repository as flux source</h2>
+<p>First, the flux configuration repository must be cloned to the
+local computer.</p>
+<pre><code class="language-sh">git clone git@github.com:zonedbit/flux-conf-playground.git
 
-# Add this line
-. &lt;(flux completion bash)
+cd flux-conf-playground
 </code></pre>
-<h3 id="enable-autocompletion-zsh">Enable Autocompletion - Zsh</h3>
-<pre><code class="language-sh">vi ~/.zshrc
+<p>In the next step a CRD is created, this is a representing the
+git repository which should be deployed to Kubernetes cluster.</p>
+<pre><code class="language-sh">flux create source git podinfo \
+  --url=https://github.com/stefanprodan/podinfo \
+  --branch=master \
+  --interval=30s \
+  --export &gt; ./clusters/green/podinfo-source.yaml
+</code></pre>
+<p>After running this command a CRD is created, and can be pushed
+to the git repository.</p>
+<pre><code class="language-sh">git add -A &amp;&amp; git commit -m &quot;Add podinfo GitRepository&quot;
+git push
+</code></pre>
+<p>A moment later the git repository should appear as a new CRD and pointing to the
+GitHub repository of <em>Podinfo</em></p>
+<pre><code class="language-sh">kubectl get gitrepositories.source.toolkit.fluxcd.io --all-namespaces
 
-# Add this line
-source &lt;(flux completion zsh) &amp;&amp; compdef _flux flux
+NAMESPACE     NAME          URL                                                      READY   STATUS                                                                 AGE
+flux-system   podinfo       https://github.com/stefanprodan/podinfo                  True    Fetched revision: master/627d5c4bb67b77185f37e31d734b085019ff2951      51m
+flux-system   flux-system   ssh://git@github.com/zonedbit/flux-conf-playground.git   True    Fetched revision: flux-conf/70d9f421bb9347101c52dd20580fcbeddd2a218a   65m
 </code></pre>
+<h2 id="deploy-podinfo-via-kustomization">Deploy Podinfo via kustomization</h2>
+<p>Now the <em>Podinfo</em> microservie will be deployed to the Kubernetes cluster.
+Therefor the flux cli is used to create a kustomization CRD. Pushing the <em>Podinfo</em> kustomization
+CRD to the git repository, leads to the deployment of the <em>Podinfo</em> microservice.</p>
+<pre><code class="language-sh">flux create kustomization podinfo \
+  --source=podinfo \
+  --path=&quot;./kustomize&quot; \
+  --prune=true \
+  --validation=client \
+  --interval=5m \
+  --export &gt; ./clusters/green/podinfo-kustomization.yaml
+</code></pre>
+<pre><code class="language-sh">git add -A &amp;&amp; git commit -m &quot;Add podinfo Kustomization&quot;
+git push
+</code></pre>
+<p>By creating a port-forward it is possible to access <em>Podinfo</em>
+in a Browser via <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a></p>
+<pre><code class="language-sh">kubectl port-forward service/podinfo 8080:9898
+</code></pre>
+<h2 id="urls">URLs</h2>
+<ul>
+<li><a href="https://github.com/stefanprodan/podinfo">https://github.com/stefanprodan/podinfo</a></li>
+</ul>
               
             </div>
           </div>
@@ -164,10 +210,10 @@ source &lt;(flux completion zsh) &amp;&amp; compdef _flux flux
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="fluxv2-installation.html" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../run-container-for-analysis.html" class="btn btn-neutral float-right" title="Analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../tekton/tekton-pipeline.html" class="btn btn-neutral" title="Pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="fluxv2-installation.html" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -193,10 +239,10 @@ source &lt;(flux completion zsh) &amp;&amp; compdef _flux flux
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../tekton/tekton-pipeline.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="fluxv2-installation.html" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="fluxv2-installation.html" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../run-container-for-analysis.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

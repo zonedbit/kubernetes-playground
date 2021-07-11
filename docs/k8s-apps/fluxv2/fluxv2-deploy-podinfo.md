@@ -2,7 +2,8 @@
 
 *Podinfo* is a microservice to demonstrate best practices of
 running a microservice in a Kubernetes cluster. In this chapter
-*Podinfo* is used a deployment unit.
+*Podinfo* is used a deployment unit and deployed with FluxV2
+kustomization controller.
 
 ## Prerequisites
 
@@ -51,6 +52,12 @@ flux-system   podinfo       https://github.com/stefanprodan/podinfo             
 flux-system   flux-system   ssh://git@github.com/zonedbit/flux-conf-playground.git   True    Fetched revision: flux-conf/70d9f421bb9347101c52dd20580fcbeddd2a218a   65m
 ```
 
+## Deploy Podinfo via kustomization
+
+Now the *Podinfo* microservie will be deployed to the Kubernetes cluster.
+Therefor the flux cli is used to create a kustomization CRD. Pushing the *Podinfo* kustomization
+CRD to the git repository, leads to the deployment of the *Podinfo* microservice.
+
 ``` sh
 flux create kustomization podinfo \
   --source=podinfo \
@@ -65,6 +72,9 @@ flux create kustomization podinfo \
 git add -A && git commit -m "Add podinfo Kustomization"
 git push
 ```
+
+By creating a port-forward it is possible to access *Podinfo*
+in a Browser via <http://127.0.0.1:8080>
 
 ``` sh
 kubectl port-forward service/podinfo 8080:9898

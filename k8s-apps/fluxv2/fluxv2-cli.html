@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Installation - Kubernetes-Playground</title>
+  <title>CLI - Kubernetes-Playground</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Installation";
-    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-installation.md";
+    var mkdocs_page_name = "CLI";
+    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-cli.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -77,19 +77,19 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="#">Flux</a>
     <ul class="current">
-                <li class="toctree-l2"><a class="reference internal" href="fluxv2-cli.html">CLI</a>
-                </li>
-                <li class="toctree-l2 current"><a class="reference internal current" href="fluxv2-installation.html">Installation</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="fluxv2-cli.html">CLI</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    <li class="toctree-l3"><a class="reference internal" href="#install-the-flux-cli">Install the flux cli</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#enable-autocompletion-bash">Enable Autocompletion - Bash</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#verify-the-cluster">Verify the cluster</a>
+    <li class="toctree-l4"><a class="reference internal" href="#enable-autocompletion-zsh">Enable Autocompletion - Zsh</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-fluxv2">Install FluxV2</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a>
+        </ul>
     </li>
     </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="fluxv2-installation.html">Installation</a>
                 </li>
     </ul>
                     </li>
@@ -127,7 +127,7 @@
         
       
     
-    <li>Installation</li>
+    <li>CLI</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -139,63 +139,22 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="install-flux-v2">Install Flux V2</h1>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>A Kubernetes cluster to install FluxV2</li>
-<li>A Git Repository to manage the FluxV2 configuration<ul>
-<li>This repository is used by FluxV2 to manage is own configuration.</li>
-<li>For testing purpose, the easy way is to create a private GitHub repository</li>
-</ul>
-</li>
-</ul>
-<h2 id="verify-the-cluster">Verify the cluster</h2>
-<pre><code class="language-sh"># Ensure that the cluster fullfil the flux prerequisites.
-flux check --pre
+                <h1 id="fluxv2-cli">FluxV2 CLI</h1>
+<h2 id="install-the-flux-cli">Install the flux cli</h2>
+<pre><code class="language-sh">curl -s https://fluxcd.io/install.sh | sudo bash
 </code></pre>
-<h2 id="install-fluxv2">Install FluxV2</h2>
-<ul>
-<li>In the next command replace the URL against your own repository<ul>
-<li>In URL provided by GitHub to clone the repository
-  must the <code>:</code> after the top-level domain com replaced against a <code>/</code></li>
-</ul>
-</li>
-<li>During the installation FluxV2 will generate a pair of private and public ssh keys<ul>
-<li>The public key is printed to the terminal and before continuing the installation
-  the key must be added to the GitHub repo</li>
-<li>Go to GitHub <code>repository -&gt; Settings -&gt; Deploy Keys -&gt; Add deploy keys</code></li>
-<li>Not sure if needed, just give FluxV2 write access to the repository. It is
-  a playground to make things easy and not production ready.</li>
-</ul>
-</li>
-</ul>
-<pre><code class="language-sh"># Replace the URL with the your configuration repository
-flux bootstrap git \
-  --url=ssh://git@github.com/zonedbit/flux-conf-playground.git \
-  --branch=flux-conf \
-  --path=clusters/green
+<h3 id="enable-autocompletion-bash">Enable Autocompletion - Bash</h3>
+<pre><code class="language-sh">vi ~/.bashrc
+
+# Add this line
+. &lt;(flux completion bash)
 </code></pre>
-<p>After a moment and executing the command <code>flux check</code> you should
-see a similar result.</p>
-<pre><code class="language-sh">➜  flux check
-► checking prerequisites
-✔ kubectl 1.21.1 &gt;=1.18.0-0
-✔ Kubernetes 1.21.1-3+ba118484dd39df &gt;=1.16.0-0
-► checking controllers
-✔ helm-controller: deployment ready
-► ghcr.io/fluxcd/helm-controller:v0.11.1
-✔ kustomize-controller: deployment ready
-► ghcr.io/fluxcd/kustomize-controller:v0.13.2
-✔ notification-controller: deployment ready
-► ghcr.io/fluxcd/notification-controller:v0.15.0
-✔ source-controller: deployment ready
-► ghcr.io/fluxcd/source-controller:v0.15.3
-✔ all checks passed
+<h3 id="enable-autocompletion-zsh">Enable Autocompletion - Zsh</h3>
+<pre><code class="language-sh">vi ~/.zshrc
+
+# Add this line
+source &lt;(flux completion zsh) &amp;&amp; compdef _flux flux
 </code></pre>
-<h2 id="urls">URLs</h2>
-<ul>
-<li><a href="https://fluxcd.io/docs/">https://fluxcd.io/docs/</a></li>
-</ul>
               
             </div>
           </div>
@@ -203,10 +162,10 @@ see a similar result.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../run-container-for-analysis.html" class="btn btn-neutral float-right" title="Analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="fluxv2-installation.html" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="fluxv2-cli.html" class="btn btn-neutral" title="CLI"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tekton/tekton-pipeline.html" class="btn btn-neutral" title="Pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -232,10 +191,10 @@ see a similar result.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="fluxv2-cli.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../tekton/tekton-pipeline.html" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../run-container-for-analysis.html" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="fluxv2-installation.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

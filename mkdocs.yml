@@ -15,5 +15,6 @@ nav:
                             - Installation: k8s-apps/tekton/tekton-installation.md
                             - Pipeline: k8s-apps/tekton/tekton-pipeline.md
                   - Flux:
+                            - CLI: k8s-apps/fluxv2/fluxv2-cli.md
                             - Installation: k8s-apps/fluxv2/fluxv2-installation.md
         - Analysis: run-container-for-analysis.md

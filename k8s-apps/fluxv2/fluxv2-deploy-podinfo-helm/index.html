@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+  <title>Deploy App (Helm) - Kubernetes-Playground</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../../css/theme.css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Deploy App (Helm)";
+    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-deploy-podinfo-helm.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Kubernetes-Playground</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Prepare Host System</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../vagrant/">Vagrant</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../kubectl-config/">Kubectl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../documentation-guide/">Documentation</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">k8s-apps</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../../nginx/">Nginx</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../jenkins/">Jenkins</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Tekton</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../tekton/tekton-installation/">Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../tekton/tekton-pipeline/">Pipeline</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Flux</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../fluxv2-cli/">CLI</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../fluxv2-installation/">Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../fluxv2-deploy-podinfo/">Deploy App</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">Deploy App (Helm)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#adding-git-repository-as-flux-source">Adding Git repository as flux source</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deploy-podinfo-via-helm">Deploy Podinfo via Helm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../run-container-for-analysis/">Analysis</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Kubernetes-Playground</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>k8s-apps &raquo;</li>
+        
+      
+        
+          <li>Flux &raquo;</li>
+        
+      
+    
+    <li>Deploy App (Helm)</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="deploy-podinfo-helm">Deploy Podinfo - Helm</h1>
+<p><em>Podinfo</em> is a microservice to demonstrate best practices of
+running a microservice in a Kubernetes cluster. In this chapter
+<em>Podinfo</em> is used a deployment unit and deployed with FluxV2
+kustomization controller.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>FluxV2 installed in a Kubernetes cluster</li>
+<li>A septate configuration git repository,
+  the repository from the installation section is sufficient</li>
+</ul>
+<h2 id="adding-git-repository-as-flux-source">Adding Git repository as flux source</h2>
+<p>First, the flux configuration repository must be cloned to the
+local computer.</p>
+<pre><code class="language-sh">git clone git@github.com:zonedbit/flux-conf-playground.git
+
+git checkout flux-conf
+
+cd flux-conf-playground
+</code></pre>
+<p>In the next step a CRD is created, this is a representing the
+helm repository which should be deployed to Kubernetes cluster.</p>
+<pre><code class="language-sh">flux create source helm podinfo \
+--namespace=default \
+--url=https://stefanprodan.github.io/podinfo \
+--interval=10m \
+--export &gt; ./clusters/green/podinfo-source-helm.yaml
+</code></pre>
+<p>After running this command a CRD is created, and can be pushed
+to the git repository.</p>
+<pre><code class="language-sh">git add -A &amp;&amp; git commit -m &quot;Add podinfo HelmRepository&quot;
+git push
+</code></pre>
+<p>A moment later the helm repository should appear as a new CRD and pointing to the
+HELM repository of <em>Podinfo</em></p>
+<pre><code class="language-sh">flux get sources helm -A
+
+NAMESPACE NAME    READY MESSAGE                                                     REVISION                                  SUSPENDED
+default   podinfo True  Fetched revision: 8411f23d07d3701f0e96e7d9e503b7936d7e1d56  8411f23d07d3701f0e96e7d9e503b7936d7e1d56  False
+</code></pre>
+<h2 id="deploy-podinfo-via-helm">Deploy Podinfo via Helm</h2>
+<p>In the first step a simple value yaml is create to configure the helm chart.</p>
+<pre><code class="language-sh">cat &gt; ./clusters/green/podinfo-values.yaml &lt;&lt;EOL
+replicaCount: 4
+resources:
+  limits:
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+EOL
+</code></pre>
+<p>Now the <em>Podinfo</em> microservie will be deployed to the Kubernetes cluster.
+Therefor the flux cli is used to create a helmrelease CRD. Pushing the <em>Podinfo</em> helmrelease
+CRD to the git repository, leads to the deployment of the <em>Podinfo</em> microservice.</p>
+<pre><code class="language-sh">flux create helmrelease podinfo \
+--namespace=default \
+--source=HelmRepository/podinfo \
+--release-name=podinfo \
+--chart=podinfo \
+--chart-version=&quot;&gt;5.0.0&quot; \
+--values=./clusters/green/podinfo-values.yaml \
+--export &gt; ./clusters/green/podinfo-helmrelease.yaml
+</code></pre>
+<pre><code class="language-sh">git add -A &amp;&amp; git commit -m &quot;Add podinfo helmrelease&quot;
+git push
+</code></pre>
+<p>By creating a port-forward it is possible to access <em>Podinfo</em>
+in a Browser via <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a></p>
+<pre><code class="language-sh">kubectl port-forward service/podinfo 8080:9898
+</code></pre>
+<h2 id="urls">URLs</h2>
+<ul>
+<li><a href="https://github.com/stefanprodan/podinfo">https://github.com/stefanprodan/podinfo</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../run-container-for-analysis/" class="btn btn-neutral float-right" title="Analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../fluxv2-deploy-podinfo/" class="btn btn-neutral" title="Deploy App"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../fluxv2-deploy-podinfo/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../../run-container-for-analysis/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme_extra.js" defer></script>
+    <script src="../../../js/theme.js" defer></script>
+      <script src="../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

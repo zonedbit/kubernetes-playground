@@ -19,6 +19,8 @@ local computer.
 ``` sh
 git clone git@github.com:zonedbit/flux-conf-playground.git
 
+git checkout flux-conf
+
 cd flux-conf-playground
 ```
 

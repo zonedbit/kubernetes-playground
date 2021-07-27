@@ -29,10 +29,11 @@ flux bootstrap git \
   --path=./clusters/staging
 ```
 
-### Open Podinfo
-
-<http://podinfo.k8s.home>
-
 ## Folder structure
 
 TODO
+
+## URLs
+
+* <http://podinfo.k8s.home>
+* <https://github.com/fluxcd/flux2-kustomize-helm-example>

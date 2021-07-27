@@ -18,4 +18,5 @@ nav:
                             - CLI: k8s-apps/fluxv2/fluxv2-cli.md
                             - Installation: k8s-apps/fluxv2/fluxv2-installation.md
                             - Deploy App: k8s-apps/fluxv2/fluxv2-deploy-podinfo.md
+                            - Repository Structure: k8s-apps/fluxv2/fluxv2-repository-structure.md
         - Analysis: run-container-for-analysis.md

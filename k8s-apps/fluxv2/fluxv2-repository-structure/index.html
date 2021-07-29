@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../../img/favicon.ico">
-  <title>Installation - Kubernetes-Playground</title>
+  <title>Repository Structure - Kubernetes-Playground</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Installation";
-    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-installation.md";
+    var mkdocs_page_name = "Repository Structure";
+    var mkdocs_page_input_path = "k8s-apps/fluxv2/fluxv2-repository-structure.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -79,23 +79,31 @@
     <ul class="current">
                 <li class="toctree-l2"><a class="reference internal" href="../fluxv2-cli/">CLI</a>
                 </li>
-                <li class="toctree-l2 current"><a class="reference internal current" href="./">Installation</a>
-    <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#verify-the-cluster">Verify the cluster</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-fluxv2">Install FluxV2</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a>
-    </li>
-    </ul>
+                <li class="toctree-l2"><a class="reference internal" href="../fluxv2-installation/">Installation</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../fluxv2-deploy-podinfo/">Deploy App</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../fluxv2-deploy-podinfo-helm/">Deploy App (Helm)</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../fluxv2-repository-structure/">Repository Structure</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">Repository Structure</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#create-configuration-repository">Create configuration repository</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-repository-structure">Configuration Repository Structure</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#clusters">clusters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#infrastructure">infrastructure</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#apps">apps</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#bootstrap-the-staging-environment">Bootstrap the Staging Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                     </li>
@@ -133,7 +141,7 @@
         
       
     
-    <li>Installation</li>
+    <li>Repository Structure</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -145,62 +153,91 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="install-flux-v2">Install Flux V2</h1>
-<h2 id="prerequisites">Prerequisites</h2>
+                <h1 id="repository-structure">Repository Structure</h1>
+<h2 id="create-configuration-repository">Create configuration repository</h2>
 <ul>
-<li>A Kubernetes cluster to install FluxV2</li>
-<li>A Git Repository to manage the FluxV2 configuration<ul>
-<li>This repository is used by FluxV2 to manage is own configuration.</li>
-<li>For testing purpose, the easy way is to create a private GitHub repository</li>
+<li>Create a github repository, which can be used to store the configuration.</li>
 </ul>
-</li>
-</ul>
-<h2 id="verify-the-cluster">Verify the cluster</h2>
-<pre><code class="language-sh"># Ensure that the cluster fullfil the flux prerequisites.
-flux check --pre
+<pre><code class="language-sh"># Move to the temp folder
+cd /tmp
+
+# Clone the flux configuration repository
+git clone git@github.com:zonedbit/flux-conf-playground.git
+
+# Copy the configuration files to the repository
+# Assuming the working directory is the kubernetes-playground folder
+cp -r ./k8s-apps/flux-repository-structure-example/* /tmp/flux-conf-playground/
+
+# Push the configuration to the github repository
+git add -A &amp;&amp; git commit -m &quot;Add environment and podinfo configuration&quot; &amp;&amp; git push
 </code></pre>
-<h2 id="install-fluxv2">Install FluxV2</h2>
+<h2 id="configuration-repository-structure">Configuration Repository Structure</h2>
+<p>At the top level the configuration repository contains three apps, clusters, and infrastructure folders.
+In the next sub-section the meaning of these folders are explained.</p>
+<pre><code class="language-sh">.
+├── apps
+│   ├── base
+│   │   └── podinfo
+│   │       ├── ingress.yaml
+│   │       ├── kustomization.yaml
+│   │       ├── namespace.yaml
+│   │       └── release.yaml
+│   └── staging
+│       ├── kustomization.yaml
+│       └── podinfo-values.yaml
+├── clusters
+│   └── staging
+│       ├── apps.yaml
+│       └── infrastructure.yaml
+└── infrastructure
+    └── sources
+        ├── kustomization.yaml
+        └── podinfo-source-helm.yaml
+</code></pre>
+<h3 id="clusters">clusters</h3>
 <ul>
-<li>In the next command replace the URL against your own repository<ul>
-<li>In URL provided by GitHub to clone the repository
-  must the <code>:</code> after the top-level domain com replaced against a <code>/</code></li>
+<li>The <em>clusters</em> folder contains one folder for each cluster or environment,
+      which should be managed by <em>FluxV2</em>.</li>
+<li>During the bootstrapping of <em>FluxV2</em>, the path (entry point) for flux is set to the
+      folder <em>clusters/staging</em></li>
+<li>The <em>infrastructure.yaml</em> points to the infrastructure folder. Hence, flux will apply
+      the kustomization in the infrastructure folder</li>
+<li>The <em>apps.yaml</em> points to the <em>apps/staging</em> overlay of kustomize. As the <em>app.yaml</em> defines
+      a dependency to the <em>infrastructure.yaml</em>, flux will apply the <em>apps.yaml</em> after the
+      <em>infrastructure.yaml</em>.</li>
+</ul>
+<h3 id="infrastructure">infrastructure</h3>
+<ul>
+<li>In this example the <em>infrastructure</em> folders contains one sub-folder <em>sources</em>.</li>
+<li>The <em>sources</em> folder, contains a pointer to a helm repository.</li>
+<li>This helm repository is used for pulling the app into the cluster</li>
+</ul>
+<h3 id="apps">apps</h3>
+<ul>
+<li>The <em>apps</em> is in a nutshell the configuration of the app/microserive based on kustomize</li>
+<li>The <em>base</em> folder contains the <em>podinfo</em> folder, which is in this example the unit of deployment<ul>
+<li>Here is the default configuration stored</li>
+<li>The <em>namespace.yaml</em>, creates the namespace podinfo</li>
+<li>The <em>release.yaml</em>, installs the podinfo helm chart to the cluster</li>
+<li>The <em>ingress.yaml</em>, creates an ingress resource, so that ingress traffic is routed to the pod</li>
 </ul>
 </li>
-<li>During the installation FluxV2 will generate a pair of private and public ssh keys<ul>
-<li>The public key is printed to the terminal and before continuing the installation
-  the key must be added to the GitHub repo</li>
-<li>Go to GitHub <code>repository -&gt; Settings -&gt; Deploy Keys -&gt; Add deploy keys</code></li>
-<li>Not sure if needed, just give FluxV2 write access to the repository. It is
-  a playground to make things easy and not production ready.</li>
+<li>The <em>staging</em> folder, is a kustomize overlay. This overlay points to the base configuration and applies some
+    cluster specific configuration.</li>
 </ul>
-</li>
-</ul>
-<pre><code class="language-sh"># Replace the URL with the your configuration repository
+<h3 id="bootstrap-the-staging-environment">Bootstrap the Staging Environment</h3>
+<p>In the last step the <em>staging</em> environment is bootstrapped, here it
+is important the <code>path</code> parameter points to the folder <em>./clusters/staging</em>.</p>
+<pre><code class="language-sh"># Bootstrap Flux
 flux bootstrap git \
   --url=ssh://git@github.com/zonedbit/flux-conf-playground.git \
-  --branch=flux-conf \
-  --path=clusters/green
-</code></pre>
-<p>After a moment and executing the command <code>flux check</code> you should
-see a similar result.</p>
-<pre><code class="language-sh">➜  flux check
-► checking prerequisites
-✔ kubectl 1.21.1 &gt;=1.18.0-0
-✔ Kubernetes 1.21.1-3+ba118484dd39df &gt;=1.16.0-0
-► checking controllers
-✔ helm-controller: deployment ready
-► ghcr.io/fluxcd/helm-controller:v0.11.1
-✔ kustomize-controller: deployment ready
-► ghcr.io/fluxcd/kustomize-controller:v0.13.2
-✔ notification-controller: deployment ready
-► ghcr.io/fluxcd/notification-controller:v0.15.0
-✔ source-controller: deployment ready
-► ghcr.io/fluxcd/source-controller:v0.15.3
-✔ all checks passed
+  --branch=main \
+  --path=./clusters/staging
 </code></pre>
 <h2 id="urls">URLs</h2>
 <ul>
-<li><a href="https://fluxcd.io/docs/">https://fluxcd.io/docs/</a></li>
+<li><a href="http://podinfo.k8s.home">http://podinfo.k8s.home</a></li>
+<li><a href="https://github.com/fluxcd/flux2-kustomize-helm-example">https://github.com/fluxcd/flux2-kustomize-helm-example</a></li>
 </ul>
               
             </div>
@@ -209,10 +246,10 @@ see a similar result.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../fluxv2-deploy-podinfo/" class="btn btn-neutral float-right" title="Deploy App">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../../run-container-for-analysis/" class="btn btn-neutral float-right" title="Analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../fluxv2-cli/" class="btn btn-neutral" title="CLI"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../fluxv2-deploy-podinfo-helm/" class="btn btn-neutral" title="Deploy App (Helm)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -238,10 +275,10 @@ see a similar result.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../fluxv2-cli/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../fluxv2-deploy-podinfo-helm/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../fluxv2-deploy-podinfo/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../../run-container-for-analysis/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

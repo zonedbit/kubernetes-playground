@@ -2,7 +2,7 @@
 
 ## Create configuration repository
 
-* Create a github repository
+* Create a github repository, which can be used to store the configuration.
 
 ``` sh
 # Move to the temp folder
@@ -60,9 +60,25 @@ In the next sub-section the meaning of these folders are explained.
 
 ### infrastructure
 
+* In this example the *infrastructure* folders contains one sub-folder *sources*.
+* The *sources* folder, contains a pointer to a helm repository.
+* This helm repository is used for pulling the app into the cluster
+
 ### apps
 
+* The *apps* is in a nutshell the configuration of the app/microserive based on kustomize
+* The *base* folder contains the *podinfo* folder, which is in this example the unit of deployment
+    * Here is the default configuration stored
+    * The *namespace.yaml*, creates the namespace podinfo
+    * The *release.yaml*, installs the podinfo helm chart to the cluster
+    * The *ingress.yaml*, creates an ingress resource, so that ingress traffic is routed to the pod
+* The *staging* folder, is a kustomize overlay. This overlay points to the base configuration and applies some
+    cluster specific configuration.
+
 ### Bootstrap the Staging Environment
+
+In the last step the *staging* environment is bootstrapped, here it
+is important the `path` parameter points to the folder *./clusters/staging*.
 
 ``` sh
 # Bootstrap Flux

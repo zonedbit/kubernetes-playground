@@ -1,4 +1,4 @@
-IMAGE_NAME = "ubuntu/groovy64"
+IMAGE_NAME = "bento/ubuntu-20.10"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "k8s-master" do |master|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "192.168.60.10"
-        config.vm.network "public_network", ip: "192.168.0.8", bridge: "eno1"
+        config.vm.network "public_network", ip: "192.168.0.8", bridge: "wlp5s0"
         master.vm.hostname = "k8s-master"
 
         # Install ansible; as with vagrant it does not work

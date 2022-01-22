@@ -1,4 +1,4 @@
-IMAGE_NAME = "bento/ubuntu-20.10"
+IMAGE_NAME = "ubuntu/impish64"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false

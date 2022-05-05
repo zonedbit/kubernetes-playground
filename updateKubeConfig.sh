@@ -15,7 +15,7 @@ fi
 vagrant ssh -c microk8s.config > "$KUBE_CONFIGURATION"
 
 # replace the IP with the DNS name
-sed -i -r 's/([0-9]{1,3}\.){3}[0-9]{1,3}/k8s\.home/g' "$KUBE_CONFIGURATION"
+sed -i -r 's/([0-9]{1,3}\.){3}[0-9]{1,3}/vi\-k8s\.home/g' "$KUBE_CONFIGURATION"
 
 # Add the configuration to the path
 export KUBECONFIG="$KUBE_CONFIGURATION"

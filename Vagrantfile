@@ -1,4 +1,4 @@
-IMAGE_NAME = "ubuntu/impish64"
+IMAGE_NAME = "alvistack/ubuntu-22.04"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
 
         # Install ansible; as with vagrant it does not work
         master.vm.provision "shell",
-            inline: "apt-get update -y -qq && apt-get upgrade -y -qq && apt-get install ansible -y -qq"
+            inline: "apt-get update -y -qq && apt-get upgrade -y -qq && apt-get install snapd ansible -y -qq"
 
         # Provsion the box with ansible on the guest system
         master.vm.provision "ansible_local" do |ansible|

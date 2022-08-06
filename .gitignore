@@ -6,3 +6,4 @@ bin/*
 docs/diagrams/*.png
 docs/diagrams/*.svg
 site
+.idea/*
